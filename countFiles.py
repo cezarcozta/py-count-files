@@ -1,34 +1,35 @@
 #!/usr/bin/env python3
 
 import os
-from os.path import isfile
+from datetime import datetime
 
 
-# returns all files that starts with 'piece' parameter
-def countFiles(dir: str, piece: str) -> int:
+# returns all files that contains currentDate
+def countFiles(dir: str) -> int:
+    currentDate = datetime.today().strftime('%Y%m%d')
     count = 0
     list_dir = list(os.scandir(dir))
     for file in list_dir:
-        if file.is_file() and file.name.__contains__(piece):
+        if file.is_file() and file.name.__contains__(currentDate):
             count += 1
     return count
 
 
 args = {
-    'path': '/path/to/folder',
-    'piece': 'somefilepiecename'
+    'path': '/home/cezarcozta',
 }
 
 directory = args['path']
-piece = args['piece']
 
 try:
-    files = countFiles(directory, piece)
-    print(f'has {files} files that starts with { {piece} }')
+    files = countFiles(directory)
+    currentDate = datetime.today().strftime('%Y%m%d')
+
+    if(files == 79):
+        print('valido')
+    else:
+        print('invalido')
+
+    print(f'existem {files} arquivos que contem a data { {currentDate} }')
 except Exception as e:
     print(e)
-
-# OUTPUT: Valid folder:
-#           has 0 files that starts with { piece }
-# OUTPUT: Invalid folder:
-#           [Errno 2] No such file or directory: '/invalid_folder/'
